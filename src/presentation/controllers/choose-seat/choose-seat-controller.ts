@@ -1,6 +1,6 @@
 import { BookSeat } from "../../../application/usecases/book-seat/book-seat";
 import { Controller } from "../../protocols/controller";
-import { badRequest } from "../../protocols/http-helpers";
+import { badRequest, serverError } from "../../protocols/http-helpers";
 import { HttpRequest } from "../../protocols/http-request";
 import { HttpResponse } from "../../protocols/http-response";
 import { Validation } from "../../protocols/validation";
@@ -16,12 +16,11 @@ export class ChooseSeatController implements Controller {
     if (error) return badRequest(error);
 
     try {
-      await this.bookSeat.book(request.body);
+      const reservation = await this.bookSeat.book(request.body);
       
       return null;
     } catch (error) {
-      return null
+      return serverError(error);
     }
-    
   }
 }
