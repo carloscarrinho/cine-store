@@ -40,6 +40,18 @@ describe('Unit', () => {
         // Then
         expect(dependencies.validate).toHaveBeenCalledWith(request.body);
       });
+
+      it("Should return 400 if Validation returns error", async () => {
+        // Given
+        const chooseSeatController = makeSut({ validate: jest.fn().mockReturnValueOnce(new Error()) });
+        const request = makeDefaultRequest();
+
+        // When
+        const response = await chooseSeatController.handle(request);
+
+        // Then
+        expect(response).toStrictEqual(badRequest(new Error()));
+      });
     });
   });
 });
