@@ -1,7 +1,7 @@
 import { Notifier } from "../../../application/contracts/notifier";
 import { BookSeat } from "../../../application/usecases/book-seat/book-seat";
 import { Controller } from "../../protocols/controller";
-import { badRequest, serverError } from "../../protocols/http-helpers";
+import { badRequest, serverError, success } from "../../protocols/http-helpers";
 import { HttpRequest } from "../../protocols/http-request";
 import { HttpResponse } from "../../protocols/http-response";
 import { Validation } from "../../protocols/validation";
@@ -28,7 +28,7 @@ export class ChooseSeatController implements Controller {
         eventType: 'BOOKED_SEAT'
       }));
 
-      return null;
+      return success(reservation);
     } catch (error) {
       return serverError(error);
     }

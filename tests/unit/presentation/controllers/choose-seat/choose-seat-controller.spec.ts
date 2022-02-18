@@ -1,7 +1,7 @@
 import { Controller } from "../../../../../src/presentation/protocols/controller";
 import { ChooseSeatController } from "../../../../../src/presentation/controllers/choose-seat/choose-seat-controller";
 import { Validation } from "../../../../../src/presentation/protocols/validation";
-import { badRequest, serverError } from "../../../../../src/presentation/protocols/http-helpers";
+import { badRequest, serverError, success } from "../../../../../src/presentation/protocols/http-helpers";
 import { BookSeat } from "../../../../../src/application/usecases/book-seat/book-seat";
 import { Reservation } from "../../../../../src/domain/entities/reservation";
 import { Notifier } from "../../../../../src/application/contracts/notifier";
@@ -126,6 +126,19 @@ describe('Unit', () => {
 
         // Then
         expect(dependencies.publish).toHaveBeenCalledWith(queue, message);
+      });
+
+      it("Should return 200 if book seat successfully", async () => {
+        // Given
+        const chooseSeatController = makeSut({});
+        const request = makeDefaultRequest();
+        const reservation = makeDefaultReservation();
+
+        // When
+        const response = await chooseSeatController.handle(request);
+
+        // Then
+        expect(response).toStrictEqual(success(reservation))
       });
     });
   });
